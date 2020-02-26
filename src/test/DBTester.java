@@ -1,6 +1,6 @@
 package test;
 
-
+/*
 import java.util.List;
 
 import dal.IUserDAO;
@@ -9,6 +9,8 @@ import dal.UserDAODiscImpl;
 import data.UserDTO;
 
 public class DBTester {
+
+
 	//TODO refactor as JUnit test???
 	public static void main(String[] args) {
 		IUserDAO iDAO = new UserDAODiscImpl();
@@ -74,4 +76,7 @@ public class DBTester {
 		}
 	}
 
+
+
 }
+	 */
