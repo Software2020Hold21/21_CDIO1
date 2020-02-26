@@ -18,12 +18,12 @@ public class Main {
 
 
 
-            /*
+
             UserDTO Peter = new UserDTO(123,"Peter","PR",new ArrayList<String>());
             List<UserDTO> liste = userDAO.getUserList();
             userDAO.createUser(Peter);
             liste = userDAO.getUserList();
-             */
+
 
 
 
