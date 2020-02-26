@@ -1,6 +1,10 @@
 package view;
 
 import dal.IUserDAO;
+import data.UserDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TUI {
@@ -10,7 +14,7 @@ public class TUI {
         this.userDAO = userDAO;
     }
 
-    public void mainMenu(){
+    public void mainMenu() throws IUserDAO.DALException {
 
         int exit =0;
 
@@ -33,6 +37,7 @@ public class TUI {
                 case 1:
                     // Create. call method for this menu option
                     System.out.println("Choice = " + choice);
+                    createUser(input);
                     break;
                 case 2:
                     // view.
@@ -136,6 +141,18 @@ public class TUI {
         }
 
         return "Password OK";
+    }
+
+    public void createUser(Scanner input) throws IUserDAO.DALException {
+        System.out.println("Write ID of the new user");
+        int id = input.nextInt();
+        System.out.println("Write the name of the new user");
+        String name = input.next();
+        System.out.println("Write the initials");
+        String initials = input.next();
+        List<String> roles = new ArrayList<String>();
+
+        userDAO.createUser(new UserDTO(id,name,initials,roles));
     }
 
 

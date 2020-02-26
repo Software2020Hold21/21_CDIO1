@@ -6,7 +6,7 @@ public interface IUserStore {
 
     List<UserDTO> getUserList();
 
-    public void setUserList(List<UserDTO> userList);
+    void setUserList(List<UserDTO> userList);
 
 
 }
