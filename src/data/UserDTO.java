@@ -11,17 +11,21 @@ public class UserDTO implements Serializable{
 	private String userName;                
 	private String ini;                 
 	private List<String> roles;
-	//TODO Add relevant fields
+	private String password;
+	private long cpr;
+
 	
 	public UserDTO() {
 		this.roles = new ArrayList<String>();
 	}
 
-	public UserDTO(int userId, String userName, String initials, List<String> roles) {
+	public UserDTO(int userId, String userName, String initials, List<String> roles, String password, long cpr) {
 		this.userId= userId;
 		this.userName= userName;
 		this.ini=initials;
 		this.roles = roles;
+		this.password = password;
+		this.cpr = cpr;
 	}
 	
 	public int getUserId() {
@@ -64,9 +68,22 @@ public class UserDTO implements Serializable{
 
 	@Override
 	public String toString() {
-		return "UserDTO [userId=" + userId + ", userName=" + userName + ", ini=" + ini + ", roles=" + roles + "]";
+		return "UserDTO [userId=" + userId + ", userName=" + userName + ", password="+password + ", CPR=" + cpr+ ", ini=" + ini + ", roles=" + roles + "]";
 	}
-	
-	
-	
+
+	public long getCpr() {
+		return cpr;
+	}
+
+	public void setCpr(long cpr) {
+		this.cpr = cpr;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
