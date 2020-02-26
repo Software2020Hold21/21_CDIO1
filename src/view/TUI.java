@@ -4,6 +4,7 @@ import dal.IUserDAO;
 import data.UserDTO;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,32 +17,37 @@ public class TUI {
 
     public void mainMenu() throws IUserDAO.DALException {
 
-        int exit =0;
+        boolean exit = false;
+        int menuChoice =0;
 
-        while (exit ==0) {
-
-            System.out.println("Menu");
-
-            //Display options
-            System.out.println("1: Create new user.");
-            System.out.println("2: View existing users.");
-            System.out.println("3: Edit existing account.");
-            System.out.println("4: Delete account.");
-            System.out.println("5: Exit program.");
-
-
+        while (!exit) {
+            //Initializes scanner
             Scanner input = new Scanner(System.in);
-            int choice = input.nextInt();
 
-            switch (choice) {
+            //Prints main menu
+            System.out.println("Main Menu\n" +
+                    "1: Create new user.\n" +
+                    "2. View existing users.\n" +
+                    "3. Update user.\n" +
+                    "4. Delete account.\n" +
+                    "5. Exit program.");
+
+            try{
+                menuChoice = input.nextInt();
+            }catch (InputMismatchException e){
+                System.out.println("Input must be an integer.");
+            }
+
+
+            switch (menuChoice) {
                 case 1:
                     // Create. call method for this menu option
-                    System.out.println("Choice = " + choice);
+                    System.out.println("Choice = " + menuChoice);
                     createUser(input);
                     break;
                 case 2:
                     // view.
-                    System.out.println("Choice = " + choice);
+                    System.out.println("Choice = " + menuChoice);
                     List<UserDTO> userList=userDAO.getUserList();
                     for (int i = 0; i <userList.size(); i++) {
                         System.out.println(userList.get(i).toString());
@@ -49,18 +55,17 @@ public class TUI {
                     break;
                 case 3:
                     // edit
-                    System.out.println("Choice = " + choice);
+                    System.out.println("Choice = " + menuChoice);
 
                     break;
                 case 4:
                     // delete
-                    System.out.println("Choice =" + choice);
+                    System.out.println("Choice =" + menuChoice);
 
                     break;
                 case 5:
-                    exit = choice;
-                    System.out.println("Choice = " + choice);
-
+                    exit = true;
+                    System.out.println("Choice = " + menuChoice);
                     break;
 
 
@@ -147,15 +152,65 @@ public class TUI {
     }
 
     public void createUser(Scanner input) throws IUserDAO.DALException {
-        System.out.println("Write ID of the new user");
-        int id = input.nextInt();
-        System.out.println("Write the name of the new user");
-        String name = input.next();
-        System.out.println("Write the initials");
-        String initials = input.next();
+        //User ID
+        int id =0;
+        boolean valid= false;
+        while (!valid){
+            try{
+                id =0;
+                System.out.println("Write ID of the new user");
+                id = input.nextInt();
+                valid = idValid(id);
+                if (!valid){
+                    System.out.println("ID must be a number between 11 and 99, and must not be in use already.");
+                }
+            } catch (InputMismatchException e){
+                System.out.println("ID must be a number between 11 and 99, and must not be in use already.");
+            }
+        }
+
+        //Username
+        String name = "";
+        while (name.length()<2 || name.length()>20){
+            System.out.println("Write the name of the new user");
+            name = input.next();
+        }
+
+        //Initials
+        String initials = "";
+        while (initials.length()<2 || initials.length()>4){
+            System.out.println("Write the initials of the new user");
+            initials = input.next();
+        }
+
         List<String> roles = new ArrayList<String>();
+        String[] validRoles = {"Admin","Pharmacist","Foreman","Operator"};
+        String userInput;
+        for (int i = 0; i < validRoles.length; i++) {
+            System.out.println("Write \"OK\" to grant user " + validRoles[i] + " role.  Write something else, to deny.");
+            userInput = input.next();
+            if (userInput.toLowerCase().equals("ok") ){
+                roles.add(validRoles[i]);
+            }
+        }
 
         userDAO.createUser(new UserDTO(id,name,initials,roles));
+    }
+
+    public boolean idValid(int id) throws IUserDAO.DALException {
+        //Checks that it  is in correct range
+        if (id <11 || id>99){
+            return false;
+        }
+
+        //Checks that id is not already used
+        List<UserDTO> users = userDAO.getUserList();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUserId()==id){
+                return false;
+            }
+        }
+        return true;
     }
 
 
