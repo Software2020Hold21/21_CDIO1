@@ -21,9 +21,9 @@ public class TUI {
             //Display options
             System.out.println("1: Create new user.");
             System.out.println("2: View existing users.");
-            System.out.println("3: Edit existing account");
-            System.out.println("4: Delete account");
-            System.out.println("5: Exit program");
+            System.out.println("3: Edit existing account.");
+            System.out.println("4: Delete account.");
+            System.out.println("5: Exit program.");
 
 
             Scanner input = new Scanner(System.in);
