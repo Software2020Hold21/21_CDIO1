@@ -233,12 +233,12 @@ public class TUI {
                 break;
             case 2:
                 System.out.println("Write new username:");
-                String username=input.nextLine();
+                String username=input.next();
                 user.setUserName(username);
                 break;
             case 3:
                 System.out.println("Write new initials:");
-                String initials = input.nextLine();
+                String initials = input.next();
                 user.setIni(initials);
                 break;
             case 4:
