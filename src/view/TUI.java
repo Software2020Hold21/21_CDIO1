@@ -152,18 +152,19 @@ public class TUI {
     public void createUser(Scanner input) throws IUserDAO.DALException {
         //User ID
         int id =0;
-        boolean valid= false;
-        while (!valid){
+        boolean idValid= false;
+        while (!idValid){
             try{
                 id =0;
                 System.out.println("Write ID of the new user");
                 id = input.nextInt();
-                valid = idValid(id);
-                if (!valid){
+                idValid = idValid(id);
+                if (!idValid){
                     System.out.println("ID must be a number between 11 and 99, and must not be in use already.");
                 }
             } catch (InputMismatchException e){
                 System.out.println("ID must be a number between 11 and 99, and must not be in use already.");
+                id=0;
             }
         }
 
@@ -181,6 +182,7 @@ public class TUI {
             initials = input.next();
         }
 
+        //Roles
         List<String> roles = new ArrayList<String>();
         String[] validRoles = {"Admin","Pharmacist","Foreman","Operator"};
         String userInput;
@@ -192,7 +194,31 @@ public class TUI {
             }
         }
 
-        userDAO.createUser(new UserDTO(id,name,initials,roles));
+        //Password
+        String password;
+        do {
+            password = generatePassword();
+        } while (!passwordCheck(password,name,id).equals("Password OK"));
+
+        //CPR
+        long cpr =0;
+        boolean cprValid= false;
+        while (!cprValid){
+            try{
+                cpr =0;
+                System.out.println("Write CPR of the new user");
+                cpr = input.nextLong();
+                //Maybe, CPR needs some more requirements to be valid
+                cprValid = cpr < ( 10000000000L) && cpr>99999999L;
+                if (!cprValid){
+                    System.out.println("CPR must be a 10 digit number.");
+                }
+            } catch (InputMismatchException e){
+                System.out.println("CPR must be a 10 digit number.");
+            }
+        }
+
+        userDAO.createUser(new UserDTO(id,name,initials,roles, password, cpr));
     }
 
     public void printUsers()throws IUserDAO.DALException{
