@@ -14,7 +14,7 @@ public class UserDTO implements Serializable{
 	//TODO Add relevant fields
 	
 	public UserDTO() {
-		this.roles = new ArrayList<>();
+		this.roles = new ArrayList<String>();
 	}
 	
 	public int getUserId() {
