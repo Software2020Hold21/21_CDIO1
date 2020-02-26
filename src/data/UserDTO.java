@@ -16,6 +16,13 @@ public class UserDTO implements Serializable{
 	public UserDTO() {
 		this.roles = new ArrayList<String>();
 	}
+
+	public UserDTO(int userId, String userName, String initials, List<String> roles) {
+		this.userId= userId;
+		this.userName= userName;
+		this.ini=initials;
+		this.roles = roles;
+	}
 	
 	public int getUserId() {
 		return userId;
