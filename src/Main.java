@@ -11,15 +11,6 @@ public class Main {
             tui.mainMenu();
 
 
-            String password;
-
-            for (int i = 0; i < 10; i++) {
-                password = tui.generatePassword();
-                System.out.println(tui.generatePassword());
-                System.out.println(tui.passwordCheck(password,"BO",1234));
-            }
-
-
 
 
 
