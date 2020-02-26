@@ -42,10 +42,7 @@ public class TUI {
                 case 2:
                     // view.
                     System.out.println("Choice = " + choice);
-                    List<UserDTO> userList=userDAO.getUserList();
-                    for (int i = 0; i <userList.size(); i++) {
-                        System.out.println(userList.get(i).toString());
-                    }
+                    printUsers();
                     break;
                 case 3:
                     // edit
@@ -158,6 +155,35 @@ public class TUI {
         userDAO.createUser(new UserDTO(id,name,initials,roles));
     }
 
+    public void printUsers()throws IUserDAO.DALException{
+        List<UserDTO> userList=userDAO.getUserList();
+        for (int i = 0; i <userList.size(); i++) {
+            System.out.println(userList.get(i).toString());
+        }
+    }
 
+    public void editUser(Scanner input)throws IUserDAO.DALException{
+        System.out.println("Chose the user ID of the user you want to edit");
+        printUsers();
+        int userID=input.nextInt();
+        userDAO.getUser(userID);
+        System.out.println("Chose what to edit:");
+        System.out.println("1: Edit user ID");
+        System.out.println("2: Edit usernamer");
+        System.out.println("3: Edit initials");
+        System.out.println("4: Edit role");
+        int choice=input.nextInt();
+
+        switch (choice){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
 
 }
