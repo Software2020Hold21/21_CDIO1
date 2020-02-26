@@ -42,7 +42,10 @@ public class TUI {
                 case 2:
                     // view.
                     System.out.println("Choice = " + choice);
-
+                    List<UserDTO> userList=userDAO.getUserList();
+                    for (int i = 0; i <userList.size(); i++) {
+                        System.out.println(userList.get(i).toString());
+                    }
                     break;
                 case 3:
                     // edit
