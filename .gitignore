@@ -99,7 +99,4 @@ target/
 .gitignore
 .idea/
 pom.xml
-src/main/resources/
-src/dal/
-src/dto/
-src/test/DBTester.java
+
