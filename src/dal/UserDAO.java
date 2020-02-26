@@ -11,8 +11,14 @@ public class UserDAO implements IUserDAO{
     }
 
 
-    public UserDTO getUser(int userId) throws DALException {
-        return null;
+    public UserDTO getUser(int userId) throws DALException{
+        UserDTO user=null;
+        for (int i = 0; i < users.getUserList().size(); i++) {
+            if(users.getUserList().get(i).getUserId()==userId){
+                user=users.getUserList().get(i);
+            }
+        }
+        return user;
     }
 
     public List<UserDTO> getUserList() throws DALException {

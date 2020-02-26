@@ -47,6 +47,7 @@ public class TUI {
                 case 3:
                     // edit
                     System.out.println("Choice = " + choice);
+                    editUser(input);
 
                     break;
                 case 4:
@@ -59,13 +60,8 @@ public class TUI {
                     System.out.println("Choice = " + choice);
 
                     break;
-
-
             }
         }
-
-
-
     }
 
 
@@ -166,7 +162,7 @@ public class TUI {
         System.out.println("Chose the user ID of the user you want to edit");
         printUsers();
         int userID=input.nextInt();
-        userDAO.getUser(userID);
+        UserDTO user =userDAO.getUser(userID);
         System.out.println("Chose what to edit:");
         System.out.println("1: Edit user ID");
         System.out.println("2: Edit usernamer");
@@ -176,12 +172,22 @@ public class TUI {
 
         switch (choice){
             case 1:
+                System.out.println("Write new user ID:");
+                int id=input.nextInt();
+                user.setUserId(id);
                 break;
             case 2:
+                System.out.println("Write new username:");
+                String username=input.nextLine();
+                user.setUserName(username);
                 break;
             case 3:
+                System.out.println("Write new initials:");
+                String initials = input.nextLine();
+                user.setIni(initials);
                 break;
             case 4:
+                System.out.println("Ikke implementeret endnu");
                 break;
         }
     }

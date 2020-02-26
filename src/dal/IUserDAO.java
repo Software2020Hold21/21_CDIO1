@@ -8,7 +8,7 @@ public interface IUserDAO {
 	UserDTO getUser(int userId) throws DALException;
 	List<UserDTO> getUserList() throws DALException;
 	void createUser(UserDTO user) throws DALException;
-	void updateUser(UserDTO user) throws DALException;
+	void updateUser(UserDTO user) throws DALException; //Formentlig overflødig
 	void deleteUser(int userId) throws DALException;
 	String toString();
 	
