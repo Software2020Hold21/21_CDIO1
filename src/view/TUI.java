@@ -60,6 +60,11 @@ public class TUI {
                     // delete
                     System.out.println("Choice =" + menuChoice);
 
+                    System.out.println("Pick the userID that you want to delete: ");
+                    int id = input.nextInt();
+                    userDAO.deleteUser(id);
+                    System.out.println("User "+ id+ " has now been deleted");
+
                     break;
                 case 5:
                     exit = true;
