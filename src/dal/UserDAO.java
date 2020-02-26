@@ -4,10 +4,10 @@ import data.*;
 import java.util.List;
 
 public class UserDAO implements IUserDAO{
-    private IData data;
+    private IUserStore users;
 
-    public UserDAO(IData data){
-        this.data = data;
+    public UserDAO(IUserStore users){
+        this.users = users;
     }
 
 
@@ -16,11 +16,13 @@ public class UserDAO implements IUserDAO{
     }
 
     public List<UserDTO> getUserList() throws DALException {
-        return null;
+        return users.getUserList();
     }
 
     public void createUser(UserDTO user) throws DALException {
-
+        List<UserDTO> tempraryUserList = users.getUserList();
+        tempraryUserList.add(user);
+        users.setUserList(tempraryUserList);
     }
 
     public void updateUser(UserDTO user) throws DALException {
