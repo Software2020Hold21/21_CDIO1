@@ -201,19 +201,23 @@ public class TUI {
         } while (!passwordCheck(password,name,id).equals("Password OK"));
 
         //CPR
+        String cprInput;
         long cpr =0;
         boolean cprValid= false;
         while (!cprValid){
             try{
                 cpr =0;
                 System.out.println("Write CPR of the new user");
-                cpr = input.nextLong();
+                cprInput = input.next();
+                cpr = Long.parseLong(cprInput);
                 //Maybe, CPR needs some more requirements to be valid
                 cprValid = cpr < ( 10000000000L) && cpr>99999999L;
                 if (!cprValid){
                     System.out.println("CPR must be a 10 digit number.");
                 }
             } catch (InputMismatchException e){
+                System.out.println("CPR must be a 10 digit number.");
+            } catch (NumberFormatException nE){
                 System.out.println("CPR must be a 10 digit number.");
             }
         }
@@ -256,25 +260,30 @@ public class TUI {
         System.out.println("4: Edit role");
         int choice=input.nextInt();
 
-        switch (choice){
-            case 1:
-                System.out.println("Write new user ID:");
-                int id=input.nextInt();
-                user.setUserId(id);
-                break;
-            case 2:
-                System.out.println("Write new username:");
-                String username=input.next();
-                user.setUserName(username);
-                break;
-            case 3:
-                System.out.println("Write new initials:");
-                String initials = input.next();
-                user.setIni(initials);
-                break;
-            case 4:
-                System.out.println("Ikke implementeret endnu");
-                break;
+        try{
+            switch (choice){
+                case 1:
+                    System.out.println("Write new user ID:");
+                    int id=input.nextInt();
+                    user.setUserId(id);
+                    break;
+                case 2:
+                    System.out.println("Write new username:");
+                    String username=input.next();
+                    user.setUserName(username);
+                    break;
+                case 3:
+                    System.out.println("Write new initials:");
+                    String initials = input.next();
+                    user.setIni(initials);
+                    break;
+                case 4:
+                    System.out.println("Ikke implementeret endnu");
+                    break;
+            }
+            userDAO.updateUser(user);
+        }catch (Exception e){
+            System.out.println("Couldn't complete update. Update canceled.");
         }
     }
 
