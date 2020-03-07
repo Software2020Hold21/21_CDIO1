@@ -18,6 +18,7 @@ public class TUI {
     public void mainMenu() throws IUserDAO.DALException {
 
         boolean exit = false;
+        String menuChoiceString;
         int menuChoice =0;
 
         while (!exit) {
@@ -33,8 +34,9 @@ public class TUI {
                     "5. Exit program.");
 
             try{
-                menuChoice = input.nextInt();
-            }catch (InputMismatchException e){
+                menuChoiceString = input.nextLine();
+                menuChoice = Integer.parseInt(menuChoiceString);
+            }catch (Exception e){
                 System.out.println("Input must be an integer.");
             }
 
@@ -151,20 +153,20 @@ public class TUI {
 
     public void createUser(Scanner input) throws IUserDAO.DALException {
         //User ID
-        int id =0;
+        int id = 0;
+        String idString;
         boolean idValid= false;
         while (!idValid){
             try{
-                id =0;
                 System.out.println("Write ID of the new user");
-                id = input.nextInt();
+                idString = input.nextLine();
+                id = Integer.parseInt(idString);
                 idValid = idValid(id);
                 if (!idValid){
                     System.out.println("ID must be a number between 11 and 99, and must not be in use already.");
                 }
-            } catch (InputMismatchException e){
+            } catch (Exception e) {
                 System.out.println("ID must be a number between 11 and 99, and must not be in use already.");
-                id=0;
             }
         }
 
@@ -172,14 +174,14 @@ public class TUI {
         String name = "";
         while (name.length()<2 || name.length()>20){
             System.out.println("Write the name of the new user");
-            name = input.next();
+            name = input.nextLine();
         }
 
         //Initials
         String initials = "";
         while (initials.length()<2 || initials.length()>4){
             System.out.println("Write the initials of the new user");
-            initials = input.next();
+            initials = input.nextLine();
         }
 
         //Roles
@@ -188,7 +190,7 @@ public class TUI {
         String userInput;
         for (int i = 0; i < validRoles.length; i++) {
             System.out.println("Write \"OK\" to grant user " + validRoles[i] + " role.  Write something else, to deny.");
-            userInput = input.next();
+            userInput = input.nextLine();
             if (userInput.toLowerCase().equals("ok") ){
                 roles.add(validRoles[i]);
             }
@@ -208,10 +210,10 @@ public class TUI {
             try{
                 cpr =0;
                 System.out.println("Write CPR of the new user");
-                cprInput = input.next();
+                cprInput = input.nextLine();
                 cpr = Long.parseLong(cprInput);
                 //Maybe, CPR needs some more requirements to be valid
-                cprValid = cpr < ( 10000000000L) && cpr>99999999L;
+                cprValid = cprInput.length() == 10;
                 if (!cprValid){
                     System.out.println("CPR must be a 10 digit number.");
                 }
