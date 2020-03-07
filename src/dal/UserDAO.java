@@ -2,6 +2,7 @@ package dal;
 import data.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO implements IUserDAO{
@@ -95,6 +96,14 @@ public class UserDAO implements IUserDAO{
         } else{ //If there is no file
             //Create new UserStore
             users = new UserStore();
+            //Input sample data
+            System.out.println("Generating sample data.");
+            ArrayList sampleUserList = new ArrayList<UserDTO>();
+            sampleUserList.add(new UserDTO(11,"Tim Torbensen", "TT",new ArrayList<String>(),"ABC123def","1234567890"));
+            sampleUserList.add(new UserDTO(12,"Willy Williams", "WW",new ArrayList<String>(),"ABC123def","0001112223"));
+            sampleUserList.add(new UserDTO(13,"Bo Bertelsen", "BB",new ArrayList<String>(),"ABC123def","1231231239"));
+            users.setUserList(sampleUserList);
+
             try {
                 writeToDatabase();
             } catch (Exception e){

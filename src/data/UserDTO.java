@@ -12,14 +12,14 @@ public class UserDTO implements Serializable{
 	private String ini;                 
 	private List<String> roles;
 	private String password;
-	private long cpr;
+	private String cpr;
 
 	
 	public UserDTO() {
 		this.roles = new ArrayList<String>();
 	}
 
-	public UserDTO(int userId, String userName, String initials, List<String> roles, String password, long cpr) {
+	public UserDTO(int userId, String userName, String initials, List<String> roles, String password, String cpr) {
 		this.userId= userId;
 		this.userName= userName;
 		this.ini=initials;
@@ -71,11 +71,11 @@ public class UserDTO implements Serializable{
 		return "UserDTO [userId=" + userId + ", userName=" + userName + ", password="+password + ", CPR=" + cpr+ ", ini=" + ini + ", roles=" + roles + "]";
 	}
 
-	public long getCpr() {
+	public String getCpr() {
 		return cpr;
 	}
 
-	public void setCpr(long cpr) {
+	public void setCpr(String cpr) {
 		this.cpr = cpr;
 	}
 

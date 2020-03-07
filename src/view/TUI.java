@@ -203,12 +203,11 @@ public class TUI {
         } while (!passwordCheck(password,name,id).equals("Password OK"));
 
         //CPR
-        String cprInput;
-        long cpr =0;
+        String cprInput = "";
+        long cpr;
         boolean cprValid= false;
         while (!cprValid){
             try{
-                cpr =0;
                 System.out.println("Write CPR of the new user");
                 cprInput = input.nextLine();
                 cpr = Long.parseLong(cprInput);
@@ -224,7 +223,7 @@ public class TUI {
             }
         }
 
-        userDAO.createUser(new UserDTO(id,name,initials,roles, password, cpr));
+        userDAO.createUser(new UserDTO(id,name,initials,roles, password, cprInput));
     }
 
     public void printUsers()throws IUserDAO.DALException{
@@ -251,16 +250,36 @@ public class TUI {
 
 
     public void editUser(Scanner input)throws IUserDAO.DALException{
-        System.out.println("Chose the user ID of the user you want to edit");
+        int userID=0;
+        int choice =0;
+
         printUsers();
-        int userID=input.nextInt();
+        System.out.println("Chose the user ID of the user you want to edit");
+
+        while (true) {
+            try {
+                userID=Integer.parseInt(input.nextLine());
+                break;
+            } catch (Exception e){
+                System.out.println("Input must be an existing user ID.");
+            }
+        }
+
         UserDTO user =userDAO.getUser(userID);
-        System.out.println("Chose what to edit:");
+        System.out.println("Choose what to edit:");
         System.out.println("1: Edit user ID");
         System.out.println("2: Edit usernamer");
         System.out.println("3: Edit initials");
         System.out.println("4: Edit role");
-        int choice=input.nextInt();
+
+        while (true){
+            try {
+                choice=Integer.parseInt(input.nextLine());
+                break;
+            } catch (Exception e){
+                System.out.println("Input must be an existing user ID.");
+            }
+        }
 
         try{
             switch (choice){
