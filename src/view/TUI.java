@@ -218,7 +218,7 @@ public class TUI {
                 }
             } catch (InputMismatchException e){
                 System.out.println("CPR must be a 10 digit number.");
-            } catch (NumberFormatException nE){
+            } catch (NumberFormatException e){
                 System.out.println("CPR must be a 10 digit number.");
             }
         }
@@ -303,7 +303,10 @@ public class TUI {
                     break;
             }
             userDAO.updateUser(user);
-        }catch (Exception e){
+        }catch (IUserDAO.DALException e){
+            System.out.println("Problem with writing to database. Update canceled.");
+        }
+        catch (Exception e){
             System.out.println("Couldn't complete update. Update canceled.");
         }
     }
