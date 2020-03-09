@@ -20,10 +20,10 @@ public class TUI {
         boolean exit = false;
         String menuChoiceString;
         int menuChoice =0;
+        Scanner input = new Scanner(System.in);
 
         while (!exit) {
             //Initializes scanner
-            Scanner input = new Scanner(System.in);
 
             //Prints main menu
             System.out.println("Main Menu\n" +
@@ -37,7 +37,8 @@ public class TUI {
                 menuChoiceString = input.nextLine();
                 menuChoice = Integer.parseInt(menuChoiceString);
             }catch (Exception e){
-                System.out.println("Input must be an integer.");
+                System.out.println("Input must be an integer between 1 and 5. Please try again.");
+                menuChoice =6;
             }
 
 
@@ -53,7 +54,7 @@ public class TUI {
                     printUsers();
                     break;
                 case 3:
-                    // edit
+                    // update
                     System.out.println("Choice = " + menuChoice);
                     editUser(input);
 
@@ -65,12 +66,16 @@ public class TUI {
                     System.out.println("Pick the userID that you want to delete: ");
                     int id = input.nextInt();
                     userDAO.deleteUser(id);
-                    System.out.println("User "+ id+ " has now been deleted");
+                    System.out.println("User "+ id + " has now been deleted");
 
                     break;
                 case 5:
                     exit = true;
                     System.out.println("Choice = " + menuChoice);
+                    input.close();
+                    break;
+                case 6:
+                    // Empty option to allow users to choose menu option again
                     break;
             }
         }
@@ -232,6 +237,22 @@ public class TUI {
             System.out.println(userList.get(i).toString());
         }
     }
+
+    public void printSpecificUser(int id)throws IUserDAO.DALException{
+        List<UserDTO> userList=userDAO.getUserList();
+        for (int i = 0; i <userList.size(); i++) {
+            if (userList.get(i).getUserId() == id)
+                System.out.println(userList.get(i).toString());
+        }
+    }
+
+    public void printUserIds()throws IUserDAO.DALException{
+        List<UserDTO> userList=userDAO.getUserList();
+        for (int i = 0; i <userList.size(); i++) {
+            System.out.println("User ID: " + userList.get(i).getUserId());
+        }
+    }
+
     public boolean idValid(int id) throws IUserDAO.DALException {
         //Checks that it  is in correct range
         if (id <11 || id>99){
@@ -248,17 +269,19 @@ public class TUI {
         return true;
     }
 
-
     public void editUser(Scanner input)throws IUserDAO.DALException{
         int userID=0;
         int choice =0;
 
-        printUsers();
+        printUserIds();
         System.out.println("Chose the user ID of the user you want to edit");
 
-        while (true) {
+        while (true) { //Choose the ID for editing the specific user.
             try {
                 userID=Integer.parseInt(input.nextLine());
+                System.out.println("");
+                System.out.print("Selected user: " ); //Prints the chosen user for editing.
+                printSpecificUser(userID);
                 break;
             } catch (Exception e){
                 System.out.println("Input must be an existing user ID.");
@@ -271,6 +294,8 @@ public class TUI {
         System.out.println("2: Edit usernamer");
         System.out.println("3: Edit initials");
         System.out.println("4: Edit role");
+        System.out.println("5: Back");
+
 
         while (true){
             try {
@@ -286,11 +311,12 @@ public class TUI {
                 case 1:
                     System.out.println("Write new user ID:");
                     int id=input.nextInt();
+
                     user.setUserId(id);
                     break;
                 case 2:
                     System.out.println("Write new username:");
-                    String username=input.next();
+                    String username=input.nextLine();
                     user.setUserName(username);
                     break;
                 case 3:
@@ -299,7 +325,10 @@ public class TUI {
                     user.setIni(initials);
                     break;
                 case 4:
-                    System.out.println("Ikke implementeret endnu");
+                    System.out.println("Write new role: Ikke implementeret endnu"); //todo
+                    break;
+                case 5:
+                    System.out.println("Go back to previous menu. Not implemented"); //todo
                     break;
             }
             userDAO.updateUser(user);
