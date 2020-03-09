@@ -78,7 +78,7 @@ public class UserDAO implements IUserDAO{
 
     }
 
-    public void readFromDatabase(){
+    public void readFromDatabase() throws IOException {
         File file = new File(".\\DataBase.ser");
         FileInputStream fis = null;
         ObjectInputStream ois = null;
@@ -88,9 +88,13 @@ public class UserDAO implements IUserDAO{
                 fis = new FileInputStream(dbLocation);
                 ois = new ObjectInputStream(fis);
                 users = (IUserStore) ois.readObject();
+
             } catch (Exception e){
                 System.out.println("File exists, but could not be read.");
                 e.printStackTrace();
+            } finally {
+                fis.close();
+                ois.close();
             }
 
         } else{ //If there is no file
@@ -120,9 +124,13 @@ public class UserDAO implements IUserDAO{
 
         try{
             ois.writeObject(users);
+            ois.flush();
         } catch (Exception e){
             System.out.println("Could not write to database.");
             e.printStackTrace();
+        } finally {
+            ois.close();
+            fis.close();
         }
     }
 
