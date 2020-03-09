@@ -9,7 +9,7 @@ public class UserDAO implements IUserDAO{
     private IUserStore users;
     private String dbLocation = ".\\DataBase.ser";
 
-    public UserDAO(){
+    public UserDAO() throws IOException {
         readFromDatabase();
     }
 
