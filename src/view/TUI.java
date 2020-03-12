@@ -151,7 +151,7 @@ public class TUI {
         return "Password OK";
     }
 
-    public void createUser(Scanner input) throws IUserDAO.DALException {
+    public void createUser(Scanner input){
         //User ID
         int id = 0;
         String idString;
@@ -223,49 +223,72 @@ public class TUI {
             }
         }
 
-        userDAO.createUser(new UserDTO(id,name,initials,roles, password, cprInput));
+        try{
+            userDAO.createUser(new UserDTO(id,name,initials,roles, password, cprInput));
+        } catch (IUserDAO.DALException e){
+            System.out.println("User not created. Problem with data access.");
+            e.printStackTrace();
+        }
+
     }
 
-    public void printUsers()throws IUserDAO.DALException{
-        List<UserDTO> userList=userDAO.getUserList();
-        for (int i = 0; i <userList.size(); i++) {
-            System.out.println(userList.get(i).toString());
+    public void printUsers(){
+
+        try{
+            List<UserDTO> userList=userDAO.getUserList();
+            for (int i = 0; i <userList.size(); i++) {
+                System.out.println(userList.get(i).toString());
+            }
+        } catch (IUserDAO.DALException e){
+            e.printStackTrace();
         }
+
+
     }
-    public boolean idValid(int id) throws IUserDAO.DALException {
+    public boolean idValid(int id){
         //Checks that it  is in correct range
         if (id <11 || id>99){
             return false;
         }
 
         //Checks that id is not already used
-        List<UserDTO> users = userDAO.getUserList();
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUserId()==id){
-                return false;
+        try{
+            List<UserDTO> userList=userDAO.getUserList();
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getUserId()==id){
+                    return false;
+                }
             }
+        } catch (IUserDAO.DALException e){
+            e.printStackTrace();
         }
+
         return true;
     }
 
 
-    public void editUser(Scanner input)throws IUserDAO.DALException{
+    public void editUser(Scanner input){
         int userID=0;
         int choice =0;
 
         printUsers();
-        System.out.println("Chose the user ID of the user you want to edit");
+        System.out.println("Choose the user ID of the user you want to edit");
 
         while (true) {
             try {
                 userID=Integer.parseInt(input.nextLine());
-                break;
             } catch (Exception e){
                 System.out.println("Input must be an existing user ID.");
             }
+            try{
+                UserDTO user =userDAO.getUser(userID);
+                break;
+            } catch (IUserDAO.DALException e){
+                e.printStackTrace();
+            }
         }
 
-        UserDTO user =userDAO.getUser(userID);
+
         System.out.println("Choose what to edit:");
         System.out.println("1: Edit user ID");
         System.out.println("2: Edit usernamer");
