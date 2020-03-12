@@ -19,21 +19,30 @@ public class UserDAO implements IUserDAO{
         for (int i = 0; i < users.getUserList().size(); i++) {
             if(users.getUserList().get(i).getUserId()==userId){
                 user=users.getUserList().get(i);
+                return user;
             }
         }
-        return user;
+        throw new DALException("Found no user with given userId.");
     }
 
     public List<UserDTO> getUserList() throws DALException {
-        return users.getUserList();
+        List userList = users.getUserList();
+        if (userList==null){
+            throw new DALException("Userlist not initialized.");
+        } else{
+            return users.getUserList();
+        }
     }
 
     public void createUser(UserDTO user) throws DALException {
         try{
             //Creates the user
-            List<UserDTO> tempraryUserList = users.getUserList();
-            tempraryUserList.add(user);
-            users.setUserList(tempraryUserList);
+            List<UserDTO> temporaryUserList = users.getUserList();
+            if (users.getUserList()==null){
+                throw new DALException("Userlist not initialized.");
+            }
+            temporaryUserList.add(user);
+            users.setUserList(temporaryUserList);
             //Tries to write to database
             writeToDatabase();
         } catch (Exception e){
@@ -44,6 +53,7 @@ public class UserDAO implements IUserDAO{
 
     public void updateUser(UserDTO newUser) throws DALException {
         int id = newUser.getUserId();
+        boolean searchSucceeded = false;
 
         for (int i=0; i<users.getUserList().size(); i++){ //Searches for the correct user
 
@@ -52,28 +62,38 @@ public class UserDAO implements IUserDAO{
                     users.getUserList().remove(i);
                     users.getUserList().add(newUser);
                     writeToDatabase();
+                    searchSucceeded = true;
                 } catch (Exception e){
                     System.out.println("Couldn't write to database. Update canceled.");
                     e.printStackTrace();
                 }
             }
         }
+        //If no match was found
+        if (!searchSucceeded){
+            throw new DALException("No user found with given ID.");
+        }
+
 
     }
 
     public void deleteUser(int userId) throws DALException {
-
+        boolean searchSucceded = false;
         for (int i=0; i<users.getUserList().size(); i++){
 
             if(userId == users.getUserList().get(i).getUserId()){
                 try {
                     users.getUserList().remove(i);
                     writeToDatabase();
+                    searchSucceded = true;
                 } catch (Exception e){
                     System.out.println("Couldn't write to database. Deletion canceled.");
                     e.printStackTrace();
                 }
             }
+        }
+        if (!searchSucceded){
+            throw new DALException("No user with given userId.");
         }
 
     }
