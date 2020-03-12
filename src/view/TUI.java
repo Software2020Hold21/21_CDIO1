@@ -257,6 +257,7 @@ public class TUI {
         System.out.println("Chose the user ID of the user you want to edit");
 
         while (true) {
+            //TODO Dette ser ikke ud til at virke da det stadig er muligt at indtaste et forkert bruger ID.
             try {
                 userID=Integer.parseInt(input.nextLine());
                 break;
@@ -273,6 +274,7 @@ public class TUI {
         System.out.println("4: Edit role");
 
         while (true){
+            //TODO Dette ser ikke ud til at virke da det stadig er muligt at indtaste et forkert bruger ID.
             try {
                 choice=Integer.parseInt(input.nextLine());
                 break;
@@ -287,20 +289,69 @@ public class TUI {
                     System.out.println("Write new user ID:");
                     int id=input.nextInt();
                     user.setUserId(id);
+                    System.out.println(user.getUserName()+" has now a new user id: "+id);
                     break;
                 case 2:
                     System.out.println("Write new username:");
                     String username=input.next();
                     user.setUserName(username);
+                    System.out.println("User id: "+userID+" has now a new username: "+username);
                     break;
                 case 3:
                     System.out.println("Write new initials:");
                     String initials = input.next();
                     user.setIni(initials);
+                    System.out.println("UserID: "+userID+" has gotten his initials changed too: "+initials);
                     break;
                 case 4:
-                    System.out.println("Ikke implementeret endnu");
-                    break;
+                    //Starts with saving all the old rolls
+                    List<String> roles = user.getRoles();
+                    System.out.println("Select which role to edit:");
+                    //TODO Tage stilling til om vi skal gemme dette array i anden klasse i stedet for 2 forskellige steder i vores kode
+                    String[] validRoles = {"Admin","Pharmacist","Foreman","Operator"};
+                    //A boolean that is used to to determine if the user already has the role the admin wishes to edit
+                    boolean userHasRole=false;
+                    //Prints all the the roles that the user has
+                    for (int i = 0; i < validRoles.length ; i++) {
+                        System.out.println(i+1+": " +validRoles[i]);
+                    }
+                    //Saves which role the admin wish to edit
+                    int roleNumber = input.nextInt()-1;
+                    //Loops through all the old roles roles to see if the user already has the role assigned to them
+                    for (int i = 0; i <roles.size() ; i++) {
+                        if(user.getRoles().get(i).equals(validRoles[roleNumber])){
+                           userHasRole = true;
+                        }
+                    }
+                    //If the user has the role the admin get the choice to remove it.
+                    if(userHasRole){
+                        System.out.println("Do you want to remove the role "+validRoles[roleNumber]+" from the user?");
+                        System.out.println("1: Yes");
+                        System.out.println("2: No");
+                        int deleteRole = input.nextInt();
+                        if(deleteRole==1){
+                            for (int i = 0; i <roles.size(); i++) {
+                                if(roles.get(i).equals(validRoles[roleNumber])){
+                                    roles.remove(i);
+                                    System.out.println(validRoles[roleNumber] + " has been removed from "+user.getUserName());
+                                }
+                            }
+
+                        }
+                    }else{
+                        //If the user don't have the role it will be possible to add it.
+                        System.out.println("Do you want to assign the role "+validRoles[roleNumber]+" to the user?");
+                        System.out.println("1: Yes");
+                        System.out.println("2: No");
+                        int assignRole =input.nextInt();
+                        if(assignRole==1){
+                            roles.add(validRoles[roleNumber]);
+                            System.out.println(validRoles[roleNumber] + " has been added from "+user.getUserName());
+                        }
+                }
+                //Updates the roles with the new ones
+                user.setRoles(roles);
+                break;
             }
             userDAO.updateUser(user);
         }catch (IUserDAO.DALException e){
