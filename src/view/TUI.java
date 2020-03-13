@@ -302,10 +302,10 @@ public class TUI {
                 user =userDAO.getUser(userID);
                 break;
             } catch (IUserDAO.DALException e){
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
             catch (Exception e){
-                System.out.println("Input must be an existing user ID.");
+                System.out.println("Input must a number corresponding to an existing user ID.");
             }
         }
 
@@ -315,6 +315,7 @@ public class TUI {
         System.out.println("2: Edit usernamer");
         System.out.println("3: Edit initials");
         System.out.println("4: Edit role");
+        System.out.println("5: Exit");
 
         while (true){
             //TODO Dette ser ikke ud til at virke da det stadig er muligt at indtaste et forkert bruger ID.
