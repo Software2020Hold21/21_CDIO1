@@ -63,11 +63,32 @@ public class TUI {
                 case 4:
                     // delete
                     System.out.println("Choice =" + menuChoice);
+                    int id=0;
 
-                    System.out.println("Pick the userID that you want to delete: ");
-                    int id = input.nextInt();
-                    userDAO.deleteUser(id);
-                    System.out.println("User "+ id+ " has now been deleted");
+
+                    while (true){
+                        System.out.println("Pick the userID that you want to delete: ");
+                        String userIdString = input.nextLine();
+                        try{
+                            id = Integer.parseInt(userIdString);
+
+                            System.out.println("Are you sure, you want to delete user "+ id +
+                                    "\nIf you are sure, type \"OK\".");
+                            String inputOK = input.nextLine();
+                            if (inputOK.toLowerCase().equals("ok")){
+                                userDAO.deleteUser(id);
+                                System.out.println("User "+ id+ " has now been deleted");
+                            } else{
+                                System.out.println("Deletion of user canceled.");
+                            }
+                            break;
+                        } catch (IUserDAO.DALException e){
+                            System.out.println(e.getMessage());
+                        } catch (Exception e){
+                            System.out.println("Input must be a number corresponding to a userId.");
+                        }
+                    }
+
 
                     break;
                 case 5:
