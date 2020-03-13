@@ -282,14 +282,13 @@ public class TUI {
             //TODO Dette ser ikke ud til at virke da det stadig er muligt at indtaste et forkert bruger ID.
             try {
                 userID=Integer.parseInt(input.nextLine());
-            } catch (Exception e){
-                System.out.println("Input must be an existing user ID.");
-            }
-            try{
                 user =userDAO.getUser(userID);
                 break;
             } catch (IUserDAO.DALException e){
                 e.printStackTrace();
+            }
+            catch (Exception e){
+                System.out.println("Input must be an existing user ID.");
             }
         }
 
