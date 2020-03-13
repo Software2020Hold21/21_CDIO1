@@ -309,7 +309,6 @@ public class TUI {
         return true;
     }
 
-
     public void editUser(Scanner input){
         int userID=0;
         int choice =0;
@@ -320,7 +319,6 @@ public class TUI {
         System.out.println("Choose the user ID of the user you want to edit");
 
         while (true) {
-            //TODO Dette ser ikke ud til at virke da det stadig er muligt at indtaste et forkert bruger ID.
             try {
                 userID=Integer.parseInt(input.nextLine());
                 user =userDAO.getUser(userID);
@@ -342,7 +340,6 @@ public class TUI {
         System.out.println("5: Exit");
 
         while (true){
-            //TODO Dette ser ikke ud til at virke da det stadig er muligt at indtaste et forkert bruger ID.
             try {
                 choice=Integer.parseInt(input.nextLine());
                 break;
@@ -354,10 +351,26 @@ public class TUI {
         try{
             switch (choice){
                 case 1:
-                    System.out.println("Write new user ID:");
-                    int id=input.nextInt();
-                    user.setUserId(id);
-                    System.out.println(user.getUserName()+" has now a new user id: "+id);
+
+                    boolean idValid=false;
+                    while (!idValid){
+                        try{
+                            System.out.println("Write new user ID:");
+                            String idString = input.nextLine();
+                            int id = Integer.parseInt(idString);
+                            idValid = idValid(id);
+                            if (!idValid){
+                                System.out.println("ID must be a number between 11 and 99, must not be in use already and must be a new user id");
+                            }else{
+                                user.setUserId(id);
+                                System.out.println(user.getUserName()+" has now a new user id: "+id);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("ID must be a number between 11 and 99, and must not be in use already.");
+                        }
+                    }
+
+
                     break;
                 case 2:
                     System.out.println("Write new username:");
@@ -375,7 +388,6 @@ public class TUI {
                     //Starts with saving all the old rolls
                     List<String> roles = user.getRoles();
                     System.out.println("Select which role to edit:");
-                    //TODO Tage stilling til om vi skal gemme dette array i anden klasse i stedet for 2 forskellige steder i vores kode
                     String[] validRoles = {"Admin","Pharmacist","Foreman","Operator"};
                     //A boolean that is used to to determine if the user already has the role the admin wishes to edit
                     boolean userHasRole=false;
