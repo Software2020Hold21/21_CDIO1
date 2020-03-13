@@ -174,16 +174,28 @@ public class TUI {
 
         //Username
         String name = "";
-        while (name.length()<2 || name.length()>20){
+        boolean userNameValid = false;
+        while (!userNameValid){
             System.out.println("Write the name of the new user");
             name = input.nextLine();
+            if (name.length()>=2 && name.length()<=20){
+                userNameValid = true;
+            } else{
+                System.out.println("Username must be between 2 and 20 characters.");
+            }
         }
 
         //Initials
         String initials = "";
-        while (initials.length()<2 || initials.length()>4){
-            System.out.println("Write the initials of the new user");
+        boolean initialsValid = false;
+        while (!initialsValid){
+            System.out.println("Write the initials of the user.");
             initials = input.nextLine();
+            if (initials.length()>=2 && initials.length()<=4){
+                initialsValid = true;
+            } else{
+                System.out.println("Initials must be between 2 and 4 characters.");
+            }
         }
 
         //Roles
@@ -205,16 +217,17 @@ public class TUI {
         } while (!passwordCheck(password,name,id).equals("Password OK"));
 
         //CPR
-        String cprInput = "";
-        long cpr;
+        String cprString = "";
         boolean cprValid= false;
         while (!cprValid){
             try{
                 System.out.println("Write CPR of the new user");
-                cprInput = input.nextLine();
-                cpr = Long.parseLong(cprInput);
+                cprString = input.nextLine();
+                //Checks if it only contains numbers, by trying to parse to long
+                Long.parseLong(cprString);
+
                 //Maybe, CPR needs some more requirements to be valid
-                cprValid = cprInput.length() == 10;
+                cprValid = cprString.length() == 10;
                 if (!cprValid){
                     System.out.println("CPR must be a 10 digit number.");
                 }
@@ -222,11 +235,15 @@ public class TUI {
                 System.out.println("CPR must be a 10 digit number.");
             } catch (NumberFormatException e){
                 System.out.println("CPR must be a 10 digit number.");
+            } catch (Exception e){
+                System.out.println("CPR must be a 10 digit number.");
+                e.printStackTrace();
             }
+
         }
 
         try{
-            userDAO.createUser(new UserDTO(id,name,initials,roles, password, cprInput));
+            userDAO.createUser(new UserDTO(id,name,initials,roles, password, cprString));
         } catch (IUserDAO.DALException e){
             System.out.println("User not created. Problem with data access.");
             e.printStackTrace();
