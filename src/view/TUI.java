@@ -23,9 +23,12 @@ public class TUI {
         String menuChoiceString;
         int menuChoice =0;
 
+        //Initializes scanner
+        Scanner input = new Scanner(System.in);
+
         while (!exit) {
-            //Initializes scanner
-            Scanner input = new Scanner(System.in);
+            //resets menuchoice
+            menuChoice =0;
 
             //Prints main menu
             System.out.println("Main Menu\n" +
