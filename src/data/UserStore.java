@@ -15,8 +15,4 @@ public class UserStore implements IUserStore, Serializable {
     public void setUserList(List<UserDTO> userList){
         this.userList = userList;
     }
-
-
-
-
 }

@@ -2,16 +2,13 @@ package view;
 
 import dal.IUserDAO;
 import data.UserDTO;
-
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-//import data.UserDTO;
 
 public class TUI {
     private IUserDAO userDAO;
-
 
     public TUI(IUserDAO userDAO){
         this.userDAO = userDAO;
@@ -101,7 +98,6 @@ public class TUI {
             }
         }
     }
-
 
     public String generatePassword(){
         //Structure ABC123def
@@ -288,12 +284,12 @@ public class TUI {
 
 
     }
+
     public boolean idValid(int id){
         //Checks that it  is in correct range
         if (id <11 || id>99){
             return false;
         }
-
         //Checks that id is not already used
         try{
             List<UserDTO> userList=userDAO.getUserList();
@@ -305,7 +301,6 @@ public class TUI {
         } catch (IUserDAO.DALException e){
             e.printStackTrace();
         }
-
         return true;
     }
 

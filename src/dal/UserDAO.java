@@ -13,7 +13,6 @@ public class UserDAO implements IUserDAO{
         readFromDatabase();
     }
 
-
     public UserDTO getUser(int userId) throws DALException{
         UserDTO user=null;
         for (int i = 0; i < users.getUserList().size(); i++) {
@@ -56,7 +55,6 @@ public class UserDAO implements IUserDAO{
         boolean searchSucceeded = false;
 
         for (int i=0; i<users.getUserList().size(); i++){ //Searches for the correct user
-
             if(id == users.getUserList().get(i).getUserId()){
                 try {
                     users.getUserList().remove(i);
@@ -73,14 +71,11 @@ public class UserDAO implements IUserDAO{
         if (!searchSucceeded){
             throw new DALException("No user found with given ID.");
         }
-
-
     }
 
     public void deleteUser(int userId) throws DALException {
         boolean searchSucceded = false;
         for (int i=0; i<users.getUserList().size(); i++){
-
             if(userId == users.getUserList().get(i).getUserId()){
                 try {
                     users.getUserList().remove(i);
@@ -95,7 +90,6 @@ public class UserDAO implements IUserDAO{
         if (!searchSucceded){
             throw new DALException("No user with given userId.");
         }
-
     }
 
     public void readFromDatabase() throws IOException {
@@ -153,6 +147,4 @@ public class UserDAO implements IUserDAO{
             fis.close();
         }
     }
-
-
 }

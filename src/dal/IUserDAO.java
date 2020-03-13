@@ -22,7 +22,5 @@ public interface IUserDAO {
 		public DALException(String msg) {
 			super(msg);
 		}
-
 	}
-
 }
