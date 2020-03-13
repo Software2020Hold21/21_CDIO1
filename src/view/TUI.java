@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+//import data.UserDTO;
 
 public class TUI {
     private IUserDAO userDAO;
+
 
     public TUI(IUserDAO userDAO){
         this.userDAO = userDAO;
@@ -254,8 +256,8 @@ public class TUI {
         //Checks that id is not already used
         try{
             List<UserDTO> userList=userDAO.getUserList();
-            for (int i = 0; i < users.size(); i++) {
-                if (users.get(i).getUserId()==id){
+            for (int i = 0; i < userList.size(); i++) {
+                if (userList.get(i).getUserId()==id){
                     return false;
                 }
             }
@@ -270,6 +272,8 @@ public class TUI {
     public void editUser(Scanner input){
         int userID=0;
         int choice =0;
+        //Dette er linjen der tilføjet
+        UserDTO user;
 
         printUsers();
         System.out.println("Choose the user ID of the user you want to edit");
@@ -282,7 +286,7 @@ public class TUI {
                 System.out.println("Input must be an existing user ID.");
             }
             try{
-                UserDTO user =userDAO.getUser(userID);
+                user =userDAO.getUser(userID);
                 break;
             } catch (IUserDAO.DALException e){
                 e.printStackTrace();
