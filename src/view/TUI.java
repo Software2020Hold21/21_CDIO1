@@ -1,17 +1,23 @@
 package view;
 
+import controller.InputLogic;
 import dal.IUserDAO;
 import data.UserDTO;
+import controller.InputLogic.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class TUI {
     private IUserDAO userDAO;
+    private InputLogic il;
 
     public TUI(IUserDAO userDAO){
         this.userDAO = userDAO;
+        this.il = new InputLogic(userDAO);
+
     }
 
     public void mainMenu() throws IUserDAO.DALException {
@@ -99,29 +105,7 @@ public class TUI {
         }
     }
 
-    public String generatePassword(){
-        //Structure ABC123def
-        String ABC="";
-        String numbers="";
-        String def="";
-        int asciiChar;
 
-        for (int i = 0; i < 3; i++) {
-            asciiChar = (int) (Math.random()*26)+65;
-            ABC += (char) asciiChar;
-        }
-
-        for (int i = 0; i < 3; i++) {
-            asciiChar = (int) (Math.random()*10)+48;
-            numbers += (char) asciiChar;
-        }
-
-        for (int i = 0; i < 3; i++) {
-            asciiChar = (int) (Math.random()*26)+97;
-            def += (char) asciiChar;
-        }
-        return ABC + numbers + def;
-    }
 
     public String passwordCheck(String password, String name, int id){
         String idString = Integer.toString(id);
@@ -183,7 +167,7 @@ public class TUI {
                 System.out.println("Write ID of the new user");
                 idString = input.nextLine();
                 id = Integer.parseInt(idString);
-                idValid = idValid(id);
+                idValid = il.idValid(id);
                 if (!idValid){
                     System.out.println("ID must be a number between 11 and 99, and must not be in use already.");
                 }
@@ -233,7 +217,7 @@ public class TUI {
         //Password
         String password;
         do {
-            password = generatePassword();
+            password = il.generatePassword();
         } while (!passwordCheck(password,name,id).equals("Password OK"));
 
         //CPR
@@ -285,24 +269,7 @@ public class TUI {
 
     }
 
-    public boolean idValid(int id){
-        //Checks that it  is in correct range
-        if (id <11 || id>99){
-            return false;
-        }
-        //Checks that id is not already used
-        try{
-            List<UserDTO> userList=userDAO.getUserList();
-            for (int i = 0; i < userList.size(); i++) {
-                if (userList.get(i).getUserId()==id){
-                    return false;
-                }
-            }
-        } catch (IUserDAO.DALException e){
-            e.printStackTrace();
-        }
-        return true;
-    }
+
 
     public void editUser(Scanner input){
         int userID=0;
@@ -353,7 +320,7 @@ public class TUI {
                             System.out.println("Write new user ID:");
                             String idString = input.nextLine();
                             int id = Integer.parseInt(idString);
-                            idValid = idValid(id);
+                            idValid = il.idValid(id);
                             if (!idValid){
                                 System.out.println("ID must be a number between 11 and 99, must not be in use already and must be a new user id");
                             }else{
